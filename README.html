@@ -1,0 +1,275 @@
+<html>
+    <head>
+        <title>Web Bootcamp</title>
+        <style>
+            body {
+                max-width: 120ch;
+                margin-bottom: 5rem;
+            }
+
+            .tasks {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 2rem;
+            }
+
+            .tasks > p {
+                margin-top: 0;
+            }
+
+            input {
+                margin-left: 20px;
+                margin-right: 1rem;
+            }
+
+            h3 {
+                background-color: #f1f1f1;
+                width: fit-content;
+                padding: 0 20px;
+            }
+
+            .tip {
+                text-decoration: 1px solid underline;
+            }
+
+            .tip:hover {
+                text-decoration: 1px dotted underline;
+                cursor: pointer;
+            }
+
+            label:hover {
+                text-decoration: 1px dotted #1f1f1f underline;
+                cursor: pointer;
+            }
+
+            label.checked {
+                color: grey;
+            }
+
+            hr {
+                border: 0;
+                border-top: 1px dashed grey;
+            }
+
+            summary:hover {
+                text-decoration: 1px dotted #1f1f1f underline;
+                cursor: pointer;
+            }
+
+            pre {
+                margin-left: 3rem;
+                border-left: 1px solid grey;
+                padding-left: 1rem;
+            }
+        </style>
+    </head>
+
+    <body style="font-family: monospace">
+        <h1>my web bootcamp</h1>
+
+        2024.1
+
+        <p>
+            Web Bootcamp, with little to none hand-holding. Use the internet
+            to your advantage (without using ChatGPT, for now). Every line of
+            code you write should come from your mind, not an AI. Some topics
+            may have a <i>challenge</i> and the end, which is harder than the
+            basic tasks but makes you learn more.
+            <br><br>
+            The best website for looking up stuff is MDN:
+            <a href="https://developer.mozilla.org/en-US/docs/Web" target="_blank">
+                https://developer.mozilla.org/en-US/docs/Web</a>
+            <br><br>
+            P.S. If you don't like that this page is in light mode, change it
+            yourself!
+        </p>
+
+        <div class="tasks" id="group_http_protocol">
+            <h3>HTTP Protocol</h3>
+            <p>
+                Understand the basics of how the browser communicates with
+                the server.
+            </p>
+        </div>
+
+        <div class="tasks" id="group_http_server">
+            <h3>HTTP Server</h3>
+            <p>
+                Write your own HTTP server that replies with different files
+                depending on the path. You can use any language you want. The
+                goal is to understand the HTTP protocol itself, so you cannot
+                use any libraries like Express.js or Flask. If you want to use
+                Python, <a href="https://gist.github.com/bellrise/12ef4b206608715622c0c194690d505f" target="_blank">here</a>
+                is a template.
+            </p>
+        </div>
+
+        <div class="tasks" id="group_basic_website">
+            <h3>Basic Website</h3>
+            <p>
+                Create a basic website using the HTTP server you just wrote.
+                You should understand the communication process and fetching
+                data from the server.
+            </p>
+        </div>
+
+        <div class="tasks" id="group_rest_api">
+            <h3>REST API</h3>
+            <p>
+                Websites become web applications, when they rely not only on
+                a basic HTTP server that replies with simple files, but also
+                provide a dynamic user experience by using APIs - by getting
+                &amp; posting data to it you are able to create log-in pages
+                and connect to databases.
+
+                Most web apps use a style called REST APIs - you can GET, POST,
+                PUT, UPDATE &amp; DELETE data from a service by communicating
+                using JSON.
+            </p>
+        </div>
+
+        <div class="tasks" id="group_file_browser">
+            <h3>File Browser</h3>
+            <p>
+                This is the first complete project - our goal is a file browser,
+                where you can open any file &amp; read its contents. The list
+                of files and their contents should be fetched dynamically from
+                the HTTP server. The page should also include a navigation bar,
+                which must stay open all the time.
+            </p>
+        </div>
+
+        <script defer>
+            const globalTaskList = {
+                http_protocol: {
+                    general: 'HTTP 1.1 protocol',
+                    curl_page: 'Use curl to fetch a webpage & see its headers',
+                    http_status: 'Understand HTTP status codes',
+                    content_type: 'What is Content-Type?',
+                    content_length: 'What is Content-Length?',
+                },
+
+                http_server: {
+                    single_file: 'Write a basic HTTP server which serves a single HTML file',
+                    serve_path: 'Serve different HTML files depending on the URL path',
+                    error: 'Return 404.html in case of invalid path',
+                    mime_type: 'Change Content-Type depending on file',
+                    url_params: 'Reply only to users if the user= param is set, otherwise return Unauthorized',
+                    hard1: '<span style="color: grey">Challenge:</span> Host the HTTP server on a different machine than localhost',
+                    hard2: '<span style="color: grey">Challenge:</span> Serve gzip-compressed images, using the Content-Encoding header',
+                },
+
+                basic_website: {
+                    start: 'Using the HTTP server you wrote, serve a basic website',
+                    increment_button: 'The website should have a button, which increments a counter using JS',
+                    local_storage: 'Persist the counter across reloads <span class="tip" tip="use the LocalStorage API"></span>',
+                    fetch_text_file: 'Display a text file from the server on the website using fetch()',
+                    script_in_head: 'Move the script tag into head, and replace some text on the website <b>after</b> the website has loaded',
+                    clear_counter: 'Add a button to reset the counter to 0',
+                    hard1: '<span style="color: grey">Challenge:</span> Add a timer that you can start, pause & reset (exiting the website should not stop the timer)',
+                },
+
+                rest_api: {
+                    files_endpoint: 'Add a new dedicated GET endpoint to the HTTP server, at /files',
+                    reply_files: 'Reply with a JSON blob contaning a list of HTML, JS & CSS files available to the user',
+                    fetch_files: 'Send a GET request using JS fetch(), and get the result using .json()',
+                    show_files: 'Render a HTML table with the file name & type, based on the results from /files',
+                    handle_errors: 'Reply from /files with an invalid JSON blob, and handle the error gracefully on the website (try / catch)',
+                    hard1: '<span style="color: grey">Challenge:</span> Allow uploading images via the API, and display all stored images on the website',
+                },
+
+                file_browser: {
+                    start: 'Create two main components: the navigation bar and the file contents',
+                    fetch_data: 'Fetch the list of files from the server using a REST-style request',
+                    navbar: 'Show a list of files in the navbar, let each be clickable',
+                    contents: 'When a file name is clicked, display the contents of the file in the main container',
+                    line_number: 'Display each line seperately, with a line number at the start',
+                    hard1: '<span style="color: grey">Challenge:</span> Make the file editable in the browser, and add a save button to commit the changes',
+                }
+            }
+
+            function addTask(task, desc, groupContainer) {
+                const container = document.createElement('div')
+                const box = document.createElement('input')
+                const label = document.createElement('label')
+                box.type = 'checkbox'
+                box.id = 'task_' + task
+
+                label['for'] = 'task_' + task
+                label.innerHTML = desc
+                label.id = 'label_' + task
+
+                box.addEventListener('change', (e) => {
+                    let cache = localStorage.getItem('tasks')
+                    cache = cache === null ? {} : JSON.parse(cache)
+
+                    cache[task] = e.target.checked
+                    e.target.checked ? label.classList.add('checked')
+                        : label.classList.remove('checked')
+
+                    localStorage.setItem('tasks', JSON.stringify(cache))
+                })
+
+                label.addEventListener('click', (e) => {
+                    box.click()
+                })
+
+                container.appendChild(box)
+                container.appendChild(label)
+                groupContainer.appendChild(container)
+            }
+
+            function renderTasks(tasks, group) {
+                const groupContainer = document.getElementById('group_' + group)
+                Object.keys(tasks).forEach((task) => {
+                    addTask(group + '_' + task, tasks[task], groupContainer)
+                })
+            }
+
+            function renderAllTasks() {
+                Object.keys(globalTaskList).forEach((group) => {
+                    renderTasks(
+                        globalTaskList[group],
+                        group
+                    )
+                })
+
+                const tips = document.querySelectorAll('.tip')
+                Array.from(tips).forEach((tip) => {
+                    tip.innerText = 'hint?'
+
+                    tip.addEventListener('click', (e) => {
+                        if (tip.innerText === 'hint?') {
+                            tip.innerText = 'hint: ' + tip.getAttribute('tip')
+                        } else {
+                            tip.innerText = 'hint?'
+                        }
+
+                        e.stopPropagation()
+                    })
+                })
+            }
+
+            // Load tasks back
+
+            function loadtasks() {
+                let cache = localStorage.getItem('tasks')
+                cache = cache === null ? {} : JSON.parse(cache)
+
+                Object.keys(cache).forEach((task) => {
+                    const checkbox = document.getElementById('task_' + task)
+                    const label = document.getElementById('label_' + task)
+
+                    if (checkbox && label) {
+                        checkbox.checked = cache[task]
+                        checkbox.checked ? label.classList.add('checked') : null
+                    }
+                })
+            }
+
+            renderAllTasks()
+            loadtasks()
+        </script>
+
+    </body>
+</html>
