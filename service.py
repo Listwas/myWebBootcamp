@@ -15,7 +15,6 @@ def serve(headers: list, raw_payload: bytes) -> dict:
         "/styles.css": ["styles.css", "text/css"]
     }
 
-
     header = headers[0].split()
     url = header[1].split("?")
 
@@ -24,13 +23,13 @@ def serve(headers: list, raw_payload: bytes) -> dict:
         # if there's wrong url then error 404
         with open("404.html", 'r') as f:
             html_string = f.read()
-        status_code = "404"
+        status_code = "404 Not Found"
         content_type = "text/html"
     else: 
         # if there's url without param then error 401
         with open("401.html", 'r') as f: 
                 html_string = f.read()
-        status_code = "401"
+        status_code = "401 Unauthorized"
         content_type = "text/html"
     
     # displaying other files than html e.g. css, img 
@@ -40,7 +39,7 @@ def serve(headers: list, raw_payload: bytes) -> dict:
 
             with open(file_path, "rb") as f:
                 html_string = f.read() 
-            status_code = "200"
+            status_code = "200 OK"
             content_type = file_type
 
         # displaying html file only when 'user' param is entered
@@ -50,7 +49,7 @@ def serve(headers: list, raw_payload: bytes) -> dict:
 
                 with open(file_path, "r") as f:
                     html_string = f.read()
-                status_code = "200"
+                status_code = "200 OK"
                 content_type = "text/html"
 
     reply = html_string

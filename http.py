@@ -27,6 +27,8 @@ def __http_service():
         while True:
             try:
                 b = c.recv(1024, socket.MSG_DONTWAIT)
+                if not b:
+                    break
             except BlockingIOError:
                 break
             r += b
