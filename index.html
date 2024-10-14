@@ -4,26 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nga</title>
+    <link rel="stylesheet" href="./styles.css"/>
+    <script defer src="main.js"></script>
 </head>
 <body>
     <h1>pls work</h1>
-    <form action="" method="get">
-        <div>
-            <label for="name">enter your name: </label>
-                <input type="text" name="name" id="name" required />
-            
-                <input type="submit" value="send it"/>
-        </div>
-    </form>
+
+    <!-- fast escape to google  -->
     <form action="https://google.com" method="get">
         <div>
-            
             <input type="submit" value="get me out" />
         </div>
     </form>
-    
+
+    <!-- counting and reseting clicks -->
     <p id="click">no clicks at all</p>
     <button id="button_click">click me</button>
-    <script src="main.js"></script>
+    <button id="reset_clicks" onclick="reset_clicks()">reset clicks</button>
+
+    <!-- displaying fetched 'lorem ipsum' from server -->
+    <h1>here's lorem ipsum</h1>
+    <p id="verse"></p>
+    
+    <!-- timer with start, pause and reset buttons -->
+    <div class="timer">
+        <div class="display_timer">
+            <p id="display_timer">1:1:1</p>
+        </div>
+       
+        <div class="timer_buttons">
+            <button id="start_timer" onclick="timer_running()">start</button>
+            <button id="pause_timer" onclick="pause_timer()">pause</button>
+            <button id="reset_timer" onclick="reset_timer()">reset</button>
+        </div>
+
+    </div>
+
 </body>
 </html>

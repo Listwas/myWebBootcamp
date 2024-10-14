@@ -10,7 +10,8 @@ def serve(headers: list, raw_payload: bytes) -> dict:
     paths = {
         "/index":"index.html",
         "/test":"test.html",
-        "/main.js":["main.js", "text/jscript"],
+        "/verse":["verse.txt", "text/plain"],
+        "/main.js":["main.js", "text/javascript"],
         "/potos/reviewers1.png":["potos/reviewers1.png.gz", "image/png"],
         "/styles.css": ["styles.css", "text/css"]
     }
