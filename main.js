@@ -34,20 +34,65 @@ balls()
 
 
 // timer logic
-start_button = document.getElementById("start_timer").addEventListener("click", start_timer);
-pause_button = document.getElementById("pause_timer").addEventListener("click", pause_timer);
-reset_button = document.getElementById("reset_timer").addEventListener("click", reset_timer);
-
 timer = document.getElementById("display_timer");
 
-let seconds = 0;
-let minutes = 0;
 let hours = 0;
-let started;
+let minutes = 0;
+let seconds = 0;
+let started = 0;
+let my_interval;
+let time;
 
-setInterval(timer_running, 1000)
-async function timer_running() {
+
+function handleDate() {
+    exit_date = new Date(localStorage.getItem("date"))
+    console.log(localStorage.getItem("started"))
+    if (localStorage.getItem("started") === "1") {
+        started = 1;
+        let current_date = (new Date());
+        let result = current_date - exit_date;
+        result /= 1000;
+
+        hours = Math.floor(result / 3600);
+        minutes = Math.floor((result - hours * 3600) / 60);
+        seconds = Math.floor((result - (hours * 3600 + minutes * 60)));
+        
+    } else {display_time();}   
+}
+
+function start_timer() {
+    is_started(started+1)
     if (started === 1) {
+        let start_date = (new Date()).toString();
+        localStorage.setItem("date", start_date);
+        clearInterval(my_interval)
+        my_interval = setInterval(timer_running, 1000);
+    } else {pause_timer()}
+}
+
+function pause_timer() {
+    is_started(0)
+    started = 0;
+    clearInterval(my_interval)
+}
+
+function is_started(n) {
+    started = n;
+    localStorage.setItem("started", n);
+}
+
+function reset_timer() {
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    is_started(0);
+    display_time();
+    pause_timer();
+}
+
+function timer_running() {
+    console.log(started)
+    if (started >= 1) {
         if (seconds >= 60) {
             minutes++
             seconds = 0
@@ -56,26 +101,22 @@ async function timer_running() {
             hours++
             minutes = 0
         } else {seconds += 1;}
-    } else {pause_timer()}
-
-    timer.innerHTML = `${hours}:${minutes}:${seconds}`
-    saved_seconds = hours*3600 + minutes*60 + seconds
-    localStorage.setItem("time", saved_seconds)
-}
-
-function start_timer(){
-    started++;
-    if (started === 2) {
-        pause_timer()
     }
+    display_time();
 }
 
-function pause_timer() {
-    started = 0;   
+function display_time() {
+    hours_string = hours.toString().padStart(2, '0');
+    minutes_string = minutes.toString().padStart(2, '0');
+    seconds_string = seconds.toString().padStart(2, '0');
+
+    time = `${hours_string}:${minutes_string}:${seconds_string}`;
+    timer.innerHTML = time;
 }
 
-function reset_timer() {
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
-}
+document.getElementById("start_timer")
+document.getElementById("pause_timer")
+document.getElementById("reset_timer")
+
+
+my_interval = setInterval(timer_running, 1000);

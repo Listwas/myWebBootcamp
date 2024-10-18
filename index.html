@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles.css"/>
     <script defer src="main.js"></script>
 </head>
-<body>
+<body onload="handleDate()"></body>
     <h1>pls work</h1>
 
     <!-- fast escape to google  -->
@@ -33,7 +33,7 @@
         </div>
        
         <div class="timer_buttons">
-            <button id="start_timer" onclick="timer_running()">start</button>
+            <button id="start_timer" onclick="start_timer()">start</button>
             <button id="pause_timer" onclick="pause_timer()">pause</button>
             <button id="reset_timer" onclick="reset_timer()">reset</button>
         </div>

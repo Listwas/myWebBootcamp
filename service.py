@@ -1,68 +1,63 @@
 #!/usr/bin/python3
 
-def serve(headers: list, raw_payload: bytes) -> dict:
+import flask
 
-    payload = str(raw_payload, encoding="utf8")
+app = flask.Flask('service')
 
-    print("Headers:", headers)
-    # print("Payload:", payload)
-
-    paths = {
-        "/index":"index.html",
-        "/test":"test.html",
-        "/verse":["verse.txt", "text/plain"],
-        "/main.js":["main.js", "text/javascript"],
-        "/potos/reviewers1.png":["potos/reviewers1.png.gz", "image/png"],
-        "/styles.css": ["styles.css", "text/css"]
-    }
-
-    header = headers[0].split()
-    url = header[1].split("?")
-
-
-    if url[0] not in paths:
-        # if there's wrong url then error 404
-        with open("404.html", 'r') as f:
-            html_string = f.read()
-        status_code = "404 Not Found"
-        content_type = "text/html"
-    else: 
-        # if there's url without param then error 401
-        with open("401.html", 'r') as f: 
-                html_string = f.read()
-        status_code = "401 Unauthorized"
-        content_type = "text/html"
+def read_file(path: str) -> str:
+    with open(path, 'r') as f:
+        return f.read()
     
-    # displaying other files than html e.g. css, img 
-    if url[0] in paths:
-        if isinstance(paths[url[0]], list):
-            file_path, file_type = paths[url[0]] 
+@app.errorhandler(404)
+def page_not_found(e):
+    return read_file("404.html"), 404
 
-            with open(file_path, "rb") as f:
-                html_string = f.read() 
-            status_code = "200 OK"
-            content_type = file_type
+@app.route('/index')
+def index():
+    if 'user' not in flask.request.args:
+        return read_file('401.html'), 401
 
-        # displaying html file only when 'user' param is entered
-        if len(url) == 2:
-            if url[1] == "user=admin":
-                file_path = paths[url[0]]
-
-                with open(file_path, "r") as f:
-                    html_string = f.read()
-                status_code = "200 OK"
-                content_type = "text/html"
-
-    reply = html_string
+    user = flask.request.args['user']
+    if user == 'admin':
+        return read_file('index.html'), 200
     
-    headers = [
-        f"HTTP/1.1 {status_code}",
-        f"Content-Type: {content_type}",
-        f"Content-Length: {len(reply)}",
-    ]
+    return read_file('401.html'), 401
 
-    # encoding an image 
-    if content_type == "image/png":
-        headers.append("Content-Encoding: gzip")
+@app.route('/test')
+def test():
+    return read_file('test.html')
 
-    return (headers, reply)
+@app.route('/potos/<img>')
+def get_poto(img):
+    with open(f"potos/{img}.gz", "rb") as f:
+        file = f.read()
+    response = flask.Response(file)
+    response.headers["Content-Type"] = "image/png"
+    response.headers["Content-Encoding"] = "gzip"
+    return response
+
+
+@app.route('/main.js')
+def main_js():
+    response = flask.Response(read_file("main.js"))
+    response.headers["Content-Type"] = "application/javascript"
+    return response
+
+@app.route('/styles.css')
+def styles_css():
+    response = flask.Response(read_file("styles.css"))
+    response.headers["Content-Type"] = "text/css"
+    return response
+
+@app.route('/verse')
+def verse():
+    response = flask.Response(read_file("verse.txt"))
+    response.headers["Content-Type"] = "text/plain"
+    return response
+
+
+@app.route('/files')
+def files():
+    response = flask.Response(read_file("files.json"))
+    response.headers["Content-Type"] = "application/json"
+    return response
