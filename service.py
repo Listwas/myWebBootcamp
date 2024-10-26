@@ -56,6 +56,10 @@ def verse():
     return response
 
 import os
+import json
 @app.route('/files')
 def files():
-    return os.listdir("content")
+    content = os.listdir("content")        
+    response = flask.Response(json.dumps(content))
+    response.headers["Content-Type"] = "application/json"
+    return response
