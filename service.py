@@ -63,3 +63,8 @@ def files():
     response = flask.Response(json.dumps(content))
     response.headers["Content-Type"] = "application/json"
     return response
+
+
+@app.route('/content_list')
+def content_list():
+    return read_file('content_list.html')
