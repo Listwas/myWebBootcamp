@@ -21,43 +21,46 @@
         const table = document.querySelector('tbody');
         
         fetch("/files")
-            .then(response => response.json())
-            .then(data => {
-                const data_length = data.length
-                
-                for (let i = 0; i < data_length; i++) {
-                    let data_array = data[i];
-                    let ext = data_array.split('.').pop();
-                    let fileName = data_array.split('.').shift()
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            const data_length = data.length
+            
+            for (let i = 0; i < data_length; i++) {
+                let data_array = data[i];
+                let ext = data_array.split('.').pop();
+                let fileName = data_array.split('.').shift()
 
-                    const table_row = document.createElement('tr');
-                    const file_name = document.createElement('td');
-                    const file_type = document.createElement('td');
+                const table_row = document.createElement('tr');
+                const file_name = document.createElement('td');
+                const file_type = document.createElement('td');
 
-                    table_row.setAttribute("bgcolor", "lightgray");
-                    table_row.setAttribute("align", "center");
+                table_row.setAttribute("bgcolor", "lightgray");
+                table_row.setAttribute("align", "center");
 
-                    let ext_types = {
-                        "txt" : "Text",
-                        "png" : "Image"
-                    }
+                let ext_types = {
+                    "txt" : "Text",
+                    "png" : "Image",
+                    
+                }
 
-                    file_name.innerText = fileName;
+                file_name.innerText = fileName;
 
-                    if (ext in ext_types) {
-                        file_type.innerText = ext_types[ext]
-                    } else {
-                        console.log("file ext not found")
-                    }
+                if (ext in ext_types) {
+                    file_type.innerText = ext_types[ext]
+                } else {
+                    console.log("file ext not found")
+                }
 
 
-                    table.appendChild(table_row)
-                    table_row.appendChild(file_name)
-                    table_row.appendChild(file_type)
+                table.appendChild(table_row)
+                table_row.appendChild(file_name)
+                table_row.appendChild(file_type)
 
-                }          
-            })
-            .catch(error => console.error(error))
+            }
+        }) .catch(error => console.error(`something is wrong: ${error}`));
+        
+    
 
     </script>
 </body>
